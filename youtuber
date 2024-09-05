@@ -1,0 +1,57 @@
+const express = require("express");
+const app = express();
+
+app.listen(1235);
+
+let youtuber1 = {
+  channelTitle: "십오야",
+  sub: "593만명",
+  videoNum: "993개",
+};
+
+let youtuber2 = {
+  channelTitle: "침착맨",
+  sub: "227만명",
+  videoNum: "6.6천개",
+};
+
+let youtuber3 = {
+  channelTitle: "태오",
+  sub: "54.8만명",
+  videoNum: "726개",
+};
+
+let db = new Map();
+db.set(1, youtuber1);
+db.set(2, youtuber2);
+db.set(3, youtuber3);
+
+app.get("/youtuber/:id", function (req, res) {
+  let { id } = req.params;
+  id = parseInt(id);
+
+  const youtuber = db.get(id);
+  if (db.get(id) == undefined) {
+    res.json({
+      message: "유튜버 정보를 찾을 수 없습니다.",
+    });
+  } else {
+    res.json(youtuber);
+  }
+});
+// console.log(db);
+// console.log(db.get(1));
+// console.log(db.get(2));
+// console.log(db.get(3));
+
+app.use(express.json());
+app.post('/youtuber/:id', (req, res) => {
+  console.log(req.body);
+
+  //등록
+  db.set(4, req.body);
+
+  res.json({
+    message : db.get(4).channelTitle + "님, 유튜버 생활을 응원합니다."
+  });
+});
